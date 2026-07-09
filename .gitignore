@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 
 # Virtual Environment
-venv/
+venv1/
 env/
 
 # Environment Variables
