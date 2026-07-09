@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ service.title }} — Ignis Boiler Works{% endblock %}
+{% block content %}
+
+{% if service.slug == 'steam-boilers' %}
+  {% set hero_img = '/static/img/steam-boiler.jpg' %}
+{% elif service.slug == 'hot-water-heating' %}
+  {% set hero_img = '/static/img/hot-water.jpg' %}
+{% else %}
+  {% set hero_img = '/static/img/amc-maintenance.jpg' %}
+{% endif %}
+
+<section class="service-hero">
+  <img src="{{ hero_img }}" alt="{{ service.title }}">
+  <div class="service-hero-caption">
+    <div class="container">
+      <div class="breadcrumb"><a href="{{ url_for('services') }}">Services</a> / {{ service.title }}</div>
+      <h1 style="color:#fff; font-size:clamp(1.8rem,3.6vw,2.8rem); margin:0;">{{ service.title }}</h1>
+      <p style="color:rgba(244,242,237,0.8); max-width:560px; margin-top:8px;">{{ service.tagline }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="service-detail-body">
+      <div class="reveal">
+        <h2 style="font-size:1.5rem;">Overview</h2>
+        <p>{{ service.full_desc }}</p>
+      </div>
+
+      <aside class="service-facts reveal">
+        <h4>Why clients choose this</h4>
+        <ul>
+          <li><span class="tick">✓</span> Sized to your actual demand, not a standard catalogue tier</li>
+          <li><span class="tick">✓</span> Commissioning report & safety certification included</li>
+          <li><span class="tick">✓</span> Field engineers, not call-centre support</li>
+          <li><span class="tick">✓</span> Written maintenance trail for statutory audits</li>
+        </ul>
+        <a href="{{ url_for('enquiry') }}" class="btn btn-primary">Enquire About This</a>
+      </aside>
+    </div>
+
+    <div class="reveal" style="margin-top:20px;">
+      <h4 style="font-size:0.9rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em;">Explore other services</h4>
+      <div class="other-services">
+        {% for s in [
+            {'slug':'steam-boilers','title':'Industrial Steam Boilers'},
+            {'slug':'hot-water-heating','title':'Hot Water & Heating Systems'},
+            {'slug':'amc-maintenance','title':'AMC & Preventive Maintenance'}
+        ] %}
+          {% if s.slug != service.slug %}
+            <a href="{{ url_for('service_detail', slug=s.slug) }}" class="pill">{{ s.title }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

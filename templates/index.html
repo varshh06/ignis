@@ -1,0 +1,228 @@
+{% extends "base.html" %} {% block title %}Ignis Boiler Works — Industrial Steam
+& Heating Systems{% endblock %} {% block content %}
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="hero-eyebrow">Tiruchirappalli · Since design-stage</span>
+      <h1>
+        Pressure you can<br /><em>trust</em>, heat you can<br />schedule around.
+      </h1>
+      <p class="hero-sub">
+        We design, install, and maintain industrial steam boilers and hot water
+        systems for plants that can't afford a Monday morning breakdown.
+      </p>
+      <div class="hero-actions">
+        <a href="{{ url_for('enquiry') }}" class="btn btn-primary"
+          >Request a Quote</a
+        >
+        <a href="{{ url_for('services') }}" class="btn btn-ghost"
+          >View Services</a
+        >
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>250+</b><span>Installations</span></div>
+        <div class="hero-stat">
+          <b>18 yrs</b><span>Combined field experience</span>
+        </div>
+        <div class="hero-stat">
+          <b>&lt; 24 hrs</b><span>AMC breakdown response</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-gauge-wrap">
+      <svg class="hero-gauge" viewBox="0 0 420 420">
+        <circle class="gauge-face" cx="210" cy="210" r="170" />
+        <g>
+          {% for i in range(0, 27) %} {% set angle = -110 + (i * 220 / 26) %}
+          <line
+            class="gauge-tick {{ 'major' if i % 5 == 0 else '' }}"
+            x1="210"
+            y1="55"
+            x2="210"
+            y2="{{ 75 if i % 5 == 0 else 68 }}"
+            transform="rotate({{ angle }} 210 210)"
+          />
+          {% endfor %}
+        </g>
+        <text class="gauge-label" x="210" y="145" text-anchor="middle">
+          BAR
+        </text>
+        <text class="gauge-label" x="120" y="300" text-anchor="middle">0</text>
+        <text class="gauge-label" x="300" y="300" text-anchor="middle">
+          MAX
+        </text>
+        <line class="gauge-needle" x1="210" y1="210" x2="210" y2="90" />
+        <circle cx="210" cy="210" r="10" fill="var(--brass)" />
+        <circle
+          class="steam-particle"
+          cx="310"
+          cy="150"
+          r="5"
+          fill="rgba(244,242,237,0.5)"
+        />
+        <circle
+          class="steam-particle"
+          cx="330"
+          cy="160"
+          r="4"
+          fill="rgba(244,242,237,0.4)"
+        />
+        <circle
+          class="steam-particle"
+          cx="300"
+          cy="130"
+          r="6"
+          fill="rgba(244,242,237,0.35)"
+        />
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="rivet-divider">
+      <span></span>
+      <div class="line"></div>
+      <span></span>
+    </div>
+    <div class="section-head reveal">
+      <span class="eyebrow">What We Do</span>
+      <h2>Three ways we keep your plant running</h2>
+      <p>
+        Boiler systems fail quietly for months before they fail loudly for a
+        day. Here's where we usually start.
+      </p>
+    </div>
+
+    <div class="card-grid reveal-stagger">
+      <div class="service-card reveal">
+        <div class="service-card-media">
+          <img
+            src="/static/img/steam-boiler.jpg"
+            alt="Industrial Steam Boilers"
+            loading="lazy"
+          />
+        </div>
+        <div class="service-card-body">
+          <h3>Industrial Steam Boilers</h3>
+          <p>
+            Fire-tube and water-tube boilers built for textile, food processing,
+            and chemical plants that cannot afford downtime.
+          </p>
+          <a
+            href="{{ url_for('service_detail', slug='steam-boilers') }}"
+            class="service-card-link"
+          >
+            View Details <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card-media">
+          <img
+            src="/static/img/hot-water.jpg"
+            alt="Hot Water & Heating Systems"
+            loading="lazy"
+          />
+        </div>
+        <div class="service-card-body">
+          <h3>Hot Water & Heating Systems</h3>
+          <p>
+            Hot water generators and centralised heating systems for hospitals,
+            hotels, and large residential campuses.
+          </p>
+          <a
+            href="{{ url_for('service_detail', slug='hot-water-heating') }}"
+            class="service-card-link"
+          >
+            View Details <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card-media">
+          <img
+            src="/static/img/amc-maintenance.jpg"
+            alt="AMC & Preventive Maintenance"
+            loading="lazy"
+          />
+        </div>
+        <div class="service-card-body">
+          <h3>AMC & Preventive Maintenance</h3>
+          <p>
+            Annual maintenance contracts covering inspection, descaling, safety
+            valve testing, and emergency breakdown response.
+          </p>
+          <a
+            href="{{ url_for('service_detail', slug='amc-maintenance') }}"
+            class="service-card-link"
+          >
+            View Details <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Why Ignis</span>
+      <h2>Built by people who've stood next to a failed boiler at 2 AM</h2>
+      <p>
+        Everything below is a decision we made after watching the alternative go
+        wrong somewhere else.
+      </p>
+    </div>
+    <div class="card-grid" style="grid-template-columns: repeat(4, 1fr)">
+      {% for item in [ ('⏱', 'Fast Response', 'Committed AMC response windows,
+      not best-effort callbacks.'), ('📐', 'Right-Sized Systems', 'We size to
+      your real demand curve, not a catalogue default.'), ('📋', 'Documented
+      Compliance', 'Every visit ends with a written inspection report.'), ('🔧',
+      'Field-Tested Parts', 'Components chosen for serviceability, not just spec
+      sheets.') ] %}
+      <div
+        class="reveal"
+        style="
+          background: var(--charcoal-2);
+          padding: 28px 22px;
+          border-radius: 6px;
+        "
+      >
+        <div style="font-size: 1.6rem; margin-bottom: 14px">{{ item[0] }}</div>
+        <h4 style="color: var(--paper); font-size: 1rem; margin-bottom: 8px">
+          {{ item[1] }}
+        </h4>
+        <p style="color: rgba(244, 242, 237, 0.65); font-size: 0.9rem">
+          {{ item[2] }}
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container" style="text-align: center">
+    <div class="reveal">
+      <h2 style="font-size: clamp(1.6rem, 3vw, 2.2rem)">
+        Have a boiler question that can't wait?
+      </h2>
+      <p style="color: var(--ink-soft); max-width: 520px; margin: 0 auto 28px">
+        Tell us what you're running and what's going wrong — we'll get back with
+        a straight answer, not a sales script.
+      </p>
+      <a href="{{ url_for('enquiry') }}" class="btn btn-dark"
+        >Send an Enquiry</a
+      >
+    </div>
+  </div>
+</section>
+
+{% endblock %}

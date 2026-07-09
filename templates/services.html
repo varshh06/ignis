@@ -1,0 +1,98 @@
+{% extends "base.html" %} {% block title %}Services — Ignis Boiler Works{%
+endblock %} {% block content %}
+
+<section class="hero" style="padding: 80px 0 60px">
+  <div class="container">
+    <span class="hero-eyebrow">Services</span>
+    <h1 style="font-size: clamp(2rem, 4vw, 3rem)">
+      What we build,<br />install, and keep running.
+    </h1>
+    <p class="hero-sub">
+      Three core service lines, each backed by an engineering team that answers
+      the phone during a breakdown.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="card-grid reveal-stagger">
+      <div class="service-card reveal">
+        <div class="service-card-media">
+          <img
+            src="/static/img/steam-boiler.jpg"
+            alt="Industrial Steam Boilers"
+            loading="lazy"
+          />
+        </div>
+        <div class="service-card-body">
+          <h3>Industrial Steam Boilers</h3>
+          <p>High-pressure steam, engineered for continuous duty.</p>
+          <p style="font-size: 0.88rem">
+            Fire-tube and water-tube steam boilers built for textile, food
+            processing, and chemical plants that cannot afford downtime.
+          </p>
+          <a
+            href="{{ url_for('service_detail', slug='steam-boilers') }}"
+            class="service-card-link"
+          >
+            View Details <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card-media">
+          <img
+            src="/static/img/hot-water.jpg"
+            alt="Hot Water & Heating Systems"
+            loading="lazy"
+          />
+        </div>
+        <div class="service-card-body">
+          <h3>Hot Water & Heating Systems</h3>
+          <p>
+            Consistent thermal comfort for commercial and institutional
+            buildings.
+          </p>
+          <p style="font-size: 0.88rem">
+            Hot water generators and centralised heating systems for hospitals,
+            hotels, and large residential campuses.
+          </p>
+          <a
+            href="{{ url_for('service_detail', slug='hot-water-heating') }}"
+            class="service-card-link"
+          >
+            View Details <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card-media">
+          <img
+            src="/static/img/amc-maintenance.jpg"
+            alt="AMC & Preventive Maintenance"
+            loading="lazy"
+          />
+        </div>
+        <div class="service-card-body">
+          <h3>AMC & Preventive Maintenance</h3>
+          <p>Because a boiler failure is never a convenient time.</p>
+          <p style="font-size: 0.88rem">
+            Annual maintenance contracts covering inspection, descaling, safety
+            valve testing, and emergency breakdown response.
+          </p>
+          <a
+            href="{{ url_for('service_detail', slug='amc-maintenance') }}"
+            class="service-card-link"
+          >
+            View Details <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

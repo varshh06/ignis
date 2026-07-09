@@ -1,0 +1,75 @@
+{% extends "base.html" %} {% block title %}Gallery — Ignis Boiler Works{%
+endblock %} {% block content %}
+
+<section class="hero" style="padding: 80px 0 50px">
+  <div class="container">
+    <span class="hero-eyebrow">Gallery</span>
+    <h1 style="font-size: clamp(2rem, 4vw, 3rem)">
+      From the fabrication yard<br />to the plant floor.
+    </h1>
+    <p class="hero-sub">
+      A running record of installs, commissioning visits, and the plants we keep
+      breathing.
+    </p>
+  </div>
+</section>
+
+{% set gallery_items = [ {'src': '/static/img/boiler-house.jpg', 'title':
+'Boiler House Floor', 'category': 'Installations'}, {'src':
+'/static/img/steam-dist.jpg', 'title': 'Steam Distribution Header', 'category':
+'Installations'}, {'src': '/static/img/site-comm.jpg', 'title': 'Site
+Commissioning', 'category': 'Maintenance'}, {'src': '/static/img/gauge.jpg',
+'title': 'Pressure Gauge Detail', 'category': 'Components'}, {'src':
+'/static/img/yard.jpg', 'title': 'Fabrication Yard', 'category':
+'Manufacturing'}, {'src': '/static/img/insulated-pipe.jpg', 'title': 'Insulated
+Pipe Runs', 'category': 'Installations'}, {'src':
+'/static/img/industrial-control-panel.png', 'title': 'Control Panel Upgrade',
+'category': 'Components'}, {'src': '/static/img/inspection.jpg', 'title':
+'Annual Inspection Visit', 'category': 'FieldWork'} ] %}
+
+<!-- Rolling marquee of images -->
+<div class="marquee">
+  <div class="marquee-track">
+    {% for img in gallery_items %}
+    <div class="marquee-item">
+      <img src="{{ img.src }}" alt="{{ img.title }}" loading="lazy" />
+    </div>
+    {% endfor %} {% for img in gallery_items %}
+    <div class="marquee-item">
+      <img src="{{ img.src }}" alt="{{ img.title }}" loading="lazy" />
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <div class="gallery-filters reveal">
+      <button class="filter-btn active" data-category="all">All</button>
+      {% for cat in
+      ['Installations','FieldWork','Components','Manufacturing','Maintenance']
+      %}
+      <button class="filter-btn" data-category="{{ cat }}">{{ cat }}</button>
+      {% endfor %}
+    </div>
+
+    <div class="gallery-grid">
+      {% for img in gallery_items %}
+      <div class="gallery-item reveal" data-category="{{ img.category }}">
+        <img src="{{ img.src }}" alt="{{ img.title }}" loading="lazy" />
+        <div class="gallery-caption">{{ img.title }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">
+    &times;
+  </button>
+  <img id="lightboxImg" src="" alt="" />
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+{% endblock %}
