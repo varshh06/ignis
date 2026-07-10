@@ -14,9 +14,8 @@ Routes:
 
 import os
 import traceback
-import sib_api_v3_sdk
-from sib_api_v3_sdk.rest import ApiException
 
+import requests
 import psycopg2 # type: ignore
 import psycopg2.extras # type: ignore
 import requests
@@ -27,7 +26,7 @@ from flask import ( # type: ignore
 )
 
 load_dotenv()
-BREVO_API_KEY = os.environ.get("BREVO_API_KEY")
+
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
 
@@ -126,50 +125,35 @@ def verify_recaptcha(token, remote_ip=None):
 # Email
 # ------------------------------------------------------------------
 def send_enquiry_email(name, email, phone, service, message):
-    configuration = sib_api_v3_sdk.Configuration()
-    configuration.api_key['api-key'] = BREVO_API_KEY
+    access_key = os.environ.get("WEB3FORMS_ACCESS_KEY")
 
-    api_instance = sib_api_v3_sdk.TransactionalEmailsApi(
-        sib_api_v3_sdk.ApiClient(configuration)
-    )
-
-    subject = f"New Enquiry - {name}"
-
-    body = f"""
-New enquiry received.
-
-Name: {name}
-Email: {email}
-Phone: {phone}
-Service: {service}
-
-Message:
-{message}
-"""
-
-    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
-        sender={
-            "name": "Ignis Boiler Works",
-            "email": "ignistesting2025@gmail.com"
-        },
-        to=[
-            {
-                "email": SENDER_EMAIL
-            }
-        ],
-        reply_to={
-            "email": email,
-            "name": name
-        },
-        subject=subject,
-        text_content=body
-    )
+    payload = {
+        "access_key": access_key,
+        "subject": f"New Enquiry - {name}",
+        "from_name": "Ignis Boiler Works",
+        "name": name,
+        "email": email,
+        "phone": phone,
+        "service": service,
+        "message": message
+    }
 
     try:
-        api_instance.send_transac_email(send_smtp_email)
-        return True
+        response = requests.post(
+            "https://api.web3forms.com/submit",
+            json=payload,
+            timeout=15
+        )
 
-    except ApiException as e:
+        result = response.json()
+
+        if result.get("success"):
+            return True
+
+        app.logger.error(result)
+        return False
+
+    except Exception as e:
         app.logger.error(e)
         return False
 # ------------------------------------------------------------------
