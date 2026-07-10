@@ -128,7 +128,7 @@ def send_enquiry_email(name, email, phone, service, message):
     try:
         resend.Emails.send({
             "from": "Ignis Website <onboarding@resend.dev>",
-            "to": [ADMIN_EMAIL],
+            "to": [SENDER_EMAIL],
             "subject": f"New Enquiry - {name}",
             "text": f"""
 New enquiry received.
