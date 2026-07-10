@@ -150,11 +150,11 @@ def send_enquiry_email(name, email, phone, service, message):
         if result.get("success"):
             return True
 
-        app.logger.error(result)
+        app.logger.error(f"Web3Forms Response: {result}")
         return False
 
     except Exception as e:
-        app.logger.error(e)
+        app.logger.error(f"Web3Forms Exception: {e}")
         return False
 # ------------------------------------------------------------------
 # Routes
