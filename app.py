@@ -14,7 +14,8 @@ Routes:
 
 import os
 import traceback
-import resend
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
 
 import psycopg2 # type: ignore
 import psycopg2.extras # type: ignore
@@ -26,7 +27,7 @@ from flask import ( # type: ignore
 )
 
 load_dotenv()
-resend.api_key = os.environ.get("RESEND_API_KEY")
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY")
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
 
@@ -125,12 +126,16 @@ def verify_recaptcha(token, remote_ip=None):
 # Email
 # ------------------------------------------------------------------
 def send_enquiry_email(name, email, phone, service, message):
-    try:
-        resend.Emails.send({
-            "from": "Ignis Website <onboarding@resend.dev>",
-            "to": [SENDER_EMAIL],
-            "subject": f"New Enquiry - {name}",
-            "text": f"""
+    configuration = sib_api_v3_sdk.Configuration()
+    configuration.api_key['api-key'] = BREVO_API_KEY
+
+    api_instance = sib_api_v3_sdk.TransactionalEmailsApi(
+        sib_api_v3_sdk.ApiClient(configuration)
+    )
+
+    subject = f"New Enquiry - {name}"
+
+    body = f"""
 New enquiry received.
 
 Name: {name}
@@ -141,12 +146,31 @@ Service: {service}
 Message:
 {message}
 """
-        })
 
+    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+        sender={
+            "name": "Ignis Boiler Works",
+            "email": "ignistesting2025@gmail.com"
+        },
+        to=[
+            {
+                "email": ADMIN_EMAIL
+            }
+        ],
+        reply_to={
+            "email": email,
+            "name": name
+        },
+        subject=subject,
+        text_content=body
+    )
+
+    try:
+        api_instance.send_transac_email(send_smtp_email)
         return True
 
-    except Exception as e:
-        app.logger.error(f"Resend Error: {e}")
+    except ApiException as e:
+        app.logger.error(e)
         return False
 # ------------------------------------------------------------------
 # Routes
