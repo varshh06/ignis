@@ -151,8 +151,10 @@ Message:
 
     try:
         context = ssl.create_default_context()
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15) as server:
+            server.ehlo()
             server.starttls(context=context)
+            server.ehlo()
             server.login(SENDER_EMAIL, SENDER_APP_PASSWORD)
             server.sendmail(SENDER_EMAIL, ADMIN_EMAIL, msg.as_string())
         return True
