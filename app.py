@@ -13,11 +13,8 @@ Routes:
 """
 
 import os
-import smtplib
-import ssl
 import traceback
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import resend
 
 import psycopg2 # type: ignore
 import psycopg2.extras # type: ignore
@@ -29,7 +26,7 @@ from flask import ( # type: ignore
 )
 
 load_dotenv()
-
+resend.api_key = os.environ.get("RESEND_API_KEY")
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
 
@@ -128,44 +125,29 @@ def verify_recaptcha(token, remote_ip=None):
 # Email
 # ------------------------------------------------------------------
 def send_enquiry_email(name, email, phone, service, message):
-    if not (SENDER_EMAIL and SENDER_APP_PASSWORD and ADMIN_EMAIL):
-        app.logger.warning("Email not configured — skipping send (check .env)")
-        return False
+    try:
+        resend.Emails.send({
+            "from": "Ignis Website <onboarding@resend.dev>",
+            "to": [ADMIN_EMAIL],
+            "subject": f"New Enquiry - {name}",
+            "text": f"""
+New enquiry received.
 
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"New Enquiry — {name} ({service or 'General'})"
-    msg["From"] = SENDER_EMAIL
-    msg["To"] = ADMIN_EMAIL
-
-    body = f"""
-New enquiry received on the Ignis Boiler Works website.
-
-Name     : {name}
-Email    : {email}
-Phone    : {phone}
-Service  : {service or 'Not specified'}
+Name: {name}
+Email: {email}
+Phone: {phone}
+Service: {service}
 
 Message:
 {message}
 """
-    msg.attach(MIMEText(body, "plain"))
+        })
 
-    try:
-        context = ssl.create_default_context()
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15) as server:
-            server.ehlo()
-            server.starttls(context=context)
-            server.ehlo()
-            server.login(SENDER_EMAIL, SENDER_APP_PASSWORD)
-            server.sendmail(SENDER_EMAIL, ADMIN_EMAIL, msg.as_string())
         return True
 
-
-    except Exception:
-        app.logger.error(traceback.format_exc())
+    except Exception as e:
+        app.logger.error(f"Resend Error: {e}")
         return False
-
-
 # ------------------------------------------------------------------
 # Routes
 # ------------------------------------------------------------------
