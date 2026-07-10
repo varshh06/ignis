@@ -154,7 +154,7 @@ Message:
         },
         to=[
             {
-                "email": ADMIN_EMAIL
+                "email": SENDER_EMAIL
             }
         ],
         reply_to={
