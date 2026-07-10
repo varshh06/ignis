@@ -15,6 +15,7 @@ Routes:
 import os
 import smtplib
 import ssl
+import traceback
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -158,8 +159,10 @@ Message:
             server.login(SENDER_EMAIL, SENDER_APP_PASSWORD)
             server.sendmail(SENDER_EMAIL, ADMIN_EMAIL, msg.as_string())
         return True
-    except Exception as e:
-        app.logger.error(f"Email send failed: {e}")
+
+
+    except Exception:
+        app.logger.error(traceback.format_exc())
         return False
 
 
